@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "isc21-onnx"
+version = "0.1.0"
+description = ""
+authors = ["VieVie31 <orissermaroix@gmail.com>"]
+readme = "README.md"
+packages = [{include = "isc21_onnx"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.26.4"
+pillow = "^10.3.0"
+torch = "^2.3.0"
+torchvision = "^0.18.0"
+bentoml = "^1.2.16"
+onnx = "^1.16.1"
+onnxruntime = "^1.18.0"
+isc-feature-extractor = {git = "https://github.com/lyakaap/ISC21-Descriptor-Track-1st", branch = "master"}
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
