@@ -16,6 +16,7 @@ bentoml = "^1.2.16"
 onnx = "^1.16.1"
 onnxruntime = "^1.18.0"
 isc-feature-extractor = {git = "https://github.com/lyakaap/ISC21-Descriptor-Track-1st", branch = "master"}
+scikit-learn = "^1.5.0"
 
 
 

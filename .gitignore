@@ -1,4 +1,5 @@
 __pycache__/
+calibration_dataset/
 .DS_Store
 *.onnx
 *.pth
