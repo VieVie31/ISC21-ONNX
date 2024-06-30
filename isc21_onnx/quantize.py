@@ -4,7 +4,12 @@ import time
 import data_reader
 import numpy as np
 import onnxruntime
-from onnxruntime.quantization import QuantFormat, QuantType, quantize_static
+from onnxruntime.quantization import (
+    CalibrationMethod,
+    QuantFormat,
+    QuantType,
+    quantize_static,
+)
 
 
 def benchmark(model_path):
@@ -31,7 +36,9 @@ def get_args():
     parser.add_argument("--input_model", required=True, help="input model")
     parser.add_argument("--output_model", required=True, help="output model")
     parser.add_argument(
-        "--calibrate_dataset", default="./test_images", help="calibration data set"
+        "--calibrate_dataset",
+        default="../calibration_dataset",
+        help="calibration data set",
     )
     parser.add_argument(
         "--quant_format",
@@ -39,7 +46,8 @@ def get_args():
         type=QuantFormat.from_string,
         choices=list(QuantFormat),
     )
-    parser.add_argument("--per_channel", default=False, type=bool)
+    # parser.add_argument("--per_channel", default=False, type=bool)
+    parser.add_argument("--per_channel", action="store_true")
     parser.add_argument("--nb_images", default=100, type=int)
     args = parser.parse_args()
     return args
@@ -55,14 +63,16 @@ def main():
     print("DataReader created, starting calibration...")
 
     # Calibrate and quantize model
-    # Turn off model optimization during quantization
     quantize_static(
         input_model_path,
         output_model_path,
         dr,
         quant_format=args.quant_format,
         per_channel=args.per_channel,
+        activation_type=QuantType.QInt8,
         weight_type=QuantType.QInt8,
+        op_types_to_quantize=["Conv", "MatMul"],
+        calibrate_method=CalibrationMethod.Percentile,
     )
     print("Calibrated and quantized model saved.")
 
